@@ -15,7 +15,7 @@ import io.github.kovalev.datafetcher.specifications.Equal;
 import io.github.kovalev.datafetcher.specifications.Include;
 import io.github.kovalev.datafetcher.utils.FunctionParams;
 import io.github.kovalev.datafetcher.utils.GroupParam;
-import io.github.kovalev.datafetcher.utils.QueryField;
+import io.github.kovalev.datafetcher.utils.AttributeNode;
 import org.hibernate.LazyInitializationException;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -108,7 +108,7 @@ class DataFetcherTest extends DatabaseTest {
         });
 
         Optional<User> result = userDataFetcher.one(user.getId(), List.of(
-                new QueryField(User_.POSTS, null)
+                new AttributeNode(User_.POSTS, null)
         ));
 
         assertThat(result).isPresent();
@@ -134,7 +134,7 @@ class DataFetcherTest extends DatabaseTest {
         });
 
         Optional<User> result = userDataFetcher.one(user.getId(), List.of(
-                new QueryField("Invalid field", null)
+                new AttributeNode("Invalid field", null)
         ));
 
         assertThat(result).isPresent();
@@ -235,7 +235,7 @@ class DataFetcherTest extends DatabaseTest {
                 new Equal<>(user.getUsername(), User_.USERNAME),
                 new Equal<>(user.getEmail(), User_.EMAIL)
         ), List.of(
-                new QueryField(User_.POSTS, null)
+                new AttributeNode(User_.POSTS, null)
         ));
 
         assertThat(result).contains(user);
@@ -267,7 +267,7 @@ class DataFetcherTest extends DatabaseTest {
                 new Equal<>(user.getUsername(), User_.USERNAME),
                 new Equal<>(user.getEmail(), User_.EMAIL)
         ), List.of(
-                new QueryField("Invalid field", null)
+                new AttributeNode("Invalid field", null)
         ));
 
         assertThat(result).contains(user);
@@ -399,7 +399,7 @@ class DataFetcherTest extends DatabaseTest {
 
         List<User> users = userDataFetcher.fetchAllByIds(
                 List.of(user.getId()),
-                List.of(new QueryField(User_.POSTS, null))
+                List.of(new AttributeNode(User_.POSTS, null))
         );
         assertThat(users).hasSize(1);
 
@@ -426,7 +426,7 @@ class DataFetcherTest extends DatabaseTest {
 
         List<User> users = userDataFetcher.fetchAllByIds(
                 List.of(user.getId()),
-                List.of(new QueryField("Invalid field", null))
+                List.of(new AttributeNode("Invalid field", null))
         );
         assertThat(users).hasSize(1);
 

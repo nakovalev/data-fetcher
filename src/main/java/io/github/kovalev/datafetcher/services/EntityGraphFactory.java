@@ -1,6 +1,6 @@
 package io.github.kovalev.datafetcher.services;
 
-import io.github.kovalev.datafetcher.utils.QueryField;
+import io.github.kovalev.datafetcher.utils.AttributeNode;
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Subgraph;
@@ -27,46 +27,46 @@ public class EntityGraphFactory {
         return null;
     }
 
-    public EntityGraph<?> graphByFields(List<QueryField> fields, Class<?> entityClass) {
+    public EntityGraph<?> graphByFields(List<AttributeNode> attributeNodes, Class<?> entityClass) {
         EntityGraph<?> graph = entityManager.createEntityGraph(entityClass);
-        fillSubgraphs(fields, graph);
+        fillSubgraphs(attributeNodes, graph);
         return graph;
     }
 
-    void fillSubgraphs(List<QueryField> fields, EntityGraph<?> graph) {
-        if (CollectionUtils.isEmpty(fields)) {
+    void fillSubgraphs(List<AttributeNode> attributeNodes, EntityGraph<?> graph) {
+        if (CollectionUtils.isEmpty(attributeNodes)) {
             return;
         }
-        for (QueryField field : fields) {
-            String fieldName = field.getName();
-            runGraphBuilder(() -> graph.addAttributeNodes(fieldName), fieldName);
-            if (!CollectionUtils.isEmpty(field.getChildFields())) {
+        for (AttributeNode attributeNode : attributeNodes) {
+            String attribute = attributeNode.getAttribute();
+            runGraphBuilder(() -> graph.addAttributeNodes(attribute), attribute);
+            if (!CollectionUtils.isEmpty(attributeNode.getSubGraph())) {
                 runGraphBuilder(
-                        () -> addSubgraph(field.getChildFields(), graph.addSubgraph(fieldName)), fieldName
+                        () -> addSubgraph(attributeNode.getSubGraph(), graph.addSubgraph(attribute)), attribute
                 );
             }
         }
     }
 
-    void runGraphBuilder(Runnable runnable, String fieldName) {
+    void runGraphBuilder(Runnable runnable, String attribute) {
         try {
             runnable.run();
         } catch (CannotContainSubGraphException | IllegalArgumentException e) {
-            log.warn("Ошибка создания подграфа: {}", fieldName);
+            log.warn("Ошибка создания подграфа: {}", attribute);
         } catch (Exception e) {
             log.error("Ошибка создания графа", e);
         }
     }
 
-    void addSubgraph(List<QueryField> fields, Subgraph<Object> subgraph) {
-        if (CollectionUtils.isEmpty(fields)) {
+    void addSubgraph(List<AttributeNode> attributeNodes, Subgraph<Object> subgraph) {
+        if (CollectionUtils.isEmpty(attributeNodes)) {
             return;
         }
-        for (var field : fields) {
-            val fieldName = field.getName();
-            subgraph.addAttributeNodes(fieldName);
-            if (!CollectionUtils.isEmpty(field.getChildFields())) {
-                addSubgraph(field.getChildFields(), subgraph.addSubgraph(fieldName));
+        for (var attributeNode : attributeNodes) {
+            val attribute = attributeNode.getAttribute();
+            subgraph.addAttributeNodes(attribute);
+            if (!CollectionUtils.isEmpty(attributeNode.getSubGraph())) {
+                addSubgraph(attributeNode.getSubGraph(), subgraph.addSubgraph(attribute));
             }
         }
     }
