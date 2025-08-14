@@ -8,7 +8,7 @@
 
     <groupId>io.github.nakovalev</groupId>
     <artifactId>data-fetcher</artifactId>
-    <version>2.0.0.Final</version>
+    <version>3.0.0.Final</version>
     <name>data-fetcher</name>
     <description>data-fetcher</description>
 
