@@ -183,7 +183,7 @@ public class DataFetcher<E, I> {
      * @return опциональное значение сущности
      */
     public Optional<E> one(I id, List<AttributeNode> fields) {
-        return one(new Equal<>(id, idFieldName), entityGraphFactory.graphByFields(fields, entityClass));
+        return one(new Equal<>(id, idFieldName), entityGraphFactory.graphByAttributeNodes(fields, entityClass));
     }
 
 
@@ -195,7 +195,7 @@ public class DataFetcher<E, I> {
      * @return опциональное значение сущности
      */
     public Optional<E> one(@NonNull Specification<E> specification, List<AttributeNode> fields) {
-        return one(specification, entityGraphFactory.graphByFields(fields, entityClass));
+        return one(specification, entityGraphFactory.graphByAttributeNodes(fields, entityClass));
     }
 
     /**
@@ -246,7 +246,7 @@ public class DataFetcher<E, I> {
      * @return список сущностей
      */
     public List<E> fetchAllByIds(Collection<I> ids, List<AttributeNode> fields) {
-        return fetchAllByIds(ids, entityGraphFactory.graphByFields(fields, entityClass));
+        return fetchAllByIds(ids, entityGraphFactory.graphByAttributeNodes(fields, entityClass));
     }
 
     /**
@@ -270,7 +270,7 @@ public class DataFetcher<E, I> {
      * @return список сущностей
      */
     public List<E> list(@NonNull Specification<E> specification, @NonNull Sort sort, List<AttributeNode> fields) {
-        return fetchEntities(specification, sort, entityGraphFactory.graphByFields(fields, entityClass));
+        return fetchEntities(specification, sort, entityGraphFactory.graphByAttributeNodes(fields, entityClass));
     }
 
     /**
@@ -292,7 +292,7 @@ public class DataFetcher<E, I> {
      * @return список сущностей
      */
     public List<E> list(@NonNull Specification<E> specification, List<AttributeNode> fields) {
-        return fetchEntities(specification, Sort.unsorted(), entityGraphFactory.graphByFields(fields, entityClass));
+        return fetchEntities(specification, Sort.unsorted(), entityGraphFactory.graphByAttributeNodes(fields, entityClass));
     }
 
     /**
@@ -325,7 +325,7 @@ public class DataFetcher<E, I> {
      * @return страница сущностей
      */
     public Page<E> page(Specification<E> specification, @NonNull Pageable pageable, List<AttributeNode> fields) {
-        return page(specification, pageable, entityGraphFactory.graphByFields(fields, entityClass));
+        return page(specification, pageable, entityGraphFactory.graphByAttributeNodes(fields, entityClass));
     }
 
     /**
@@ -360,7 +360,7 @@ public class DataFetcher<E, I> {
      * @return срез сущностей
      */
     public Slice<E> slice(Specification<E> specification, @NonNull Pageable pageable, List<AttributeNode> fields) {
-        return slice(specification, pageable, entityGraphFactory.graphByFields(fields, entityClass));
+        return slice(specification, pageable, entityGraphFactory.graphByAttributeNodes(fields, entityClass));
     }
 
     /**

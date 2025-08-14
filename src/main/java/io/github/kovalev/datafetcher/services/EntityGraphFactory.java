@@ -27,7 +27,7 @@ public class EntityGraphFactory {
         return null;
     }
 
-    public EntityGraph<?> graphByFields(List<AttributeNode> attributeNodes, Class<?> entityClass) {
+    public EntityGraph<?> graphByAttributeNodes(List<AttributeNode> attributeNodes, Class<?> entityClass) {
         EntityGraph<?> graph = entityManager.createEntityGraph(entityClass);
         fillSubgraphs(attributeNodes, graph);
         return graph;

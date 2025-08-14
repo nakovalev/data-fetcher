@@ -57,7 +57,7 @@ class EntityGraphFactoryTest {
 
         when(entityManager.createEntityGraph(User.class)).thenReturn(userEntityGraph);
 
-        EntityGraph<?> result = entityGraphFactory.graphByFields(fields, User.class);
+        EntityGraph<?> result = entityGraphFactory.graphByAttributeNodes(fields, User.class);
 
         assertThat(result).isNotNull();
         verify(userEntityGraph).addAttributeNodes(User_.POSTS);
@@ -65,7 +65,7 @@ class EntityGraphFactoryTest {
     }
 
     @Test
-    void graphByFields_ShouldHandleNestedSubgraphs() {
+    void graphByAttributeNodes_ShouldHandleNestedSubgraphs() {
         List<AttributeNode> fields = List.of(
                 new AttributeNode(User_.POSTS, List.of(
                         new AttributeNode(Post_.COMMENTS, null)
@@ -75,7 +75,7 @@ class EntityGraphFactoryTest {
         when(entityManager.createEntityGraph(User.class)).thenReturn(userEntityGraph);
         when(userEntityGraph.addSubgraph(User_.POSTS)).thenAnswer(inv -> postsSubgraph);
 
-        EntityGraph<?> result = entityGraphFactory.graphByFields(fields, User.class);
+        EntityGraph<?> result = entityGraphFactory.graphByAttributeNodes(fields, User.class);
 
         assertThat(result).isNotNull();
         verify(userEntityGraph).addAttributeNodes(User_.POSTS);
@@ -83,7 +83,7 @@ class EntityGraphFactoryTest {
     }
 
     @Test
-    void graphByFields_ShouldLogWarning_WhenFieldIsNotAnAssociation() {
+    void graphByAttributeNodes_ShouldLogWarning_WhenFieldIsNotAnAssociation() {
         List<AttributeNode> fields = List.of(
                 new AttributeNode(User_.USERNAME, null)
         );
@@ -92,13 +92,13 @@ class EntityGraphFactoryTest {
         doThrow(IllegalArgumentException.class)
                 .when(userEntityGraph).addAttributeNodes(User_.USERNAME);
 
-        EntityGraph<?> result = entityGraphFactory.graphByFields(fields, User.class);
+        EntityGraph<?> result = entityGraphFactory.graphByAttributeNodes(fields, User.class);
 
         assertThat(result).isNotNull();
     }
 
     @Test
-    void graphByFields_ShouldSkipInvalidAssociations() {
+    void graphByAttributeNodes_ShouldSkipInvalidAssociations() {
         List<AttributeNode> fields = List.of(
                 new AttributeNode(User_.POSTS, List.of(
                         new AttributeNode("invalidField", null)
@@ -110,7 +110,7 @@ class EntityGraphFactoryTest {
         doThrow(IllegalArgumentException.class)
                 .when(postsSubgraph).addAttributeNodes("invalidField");
 
-        EntityGraph<?> result = entityGraphFactory.graphByFields(fields, User.class);
+        EntityGraph<?> result = entityGraphFactory.graphByAttributeNodes(fields, User.class);
 
         assertThat(result).isNotNull();
     }
