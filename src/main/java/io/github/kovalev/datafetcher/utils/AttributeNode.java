@@ -12,8 +12,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public final class QueryField {
+public final class AttributeNode {
     @NonNull
-    private String name;
-    private List<QueryField> childFields;
+    private String attribute;
+    private List<AttributeNode> subGraph;
 }

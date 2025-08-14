@@ -7,7 +7,7 @@ import io.github.kovalev.datafetcher.utils.FetchParams;
 import io.github.kovalev.datafetcher.utils.FunctionParams;
 import io.github.kovalev.datafetcher.utils.GroupParam;
 import io.github.kovalev.datafetcher.utils.PathCalculator;
-import io.github.kovalev.datafetcher.utils.QueryField;
+import io.github.kovalev.datafetcher.utils.AttributeNode;
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Id;
@@ -182,7 +182,7 @@ public class DataFetcher<E, I> {
      * @param fields список полей, которые нужно получить
      * @return опциональное значение сущности
      */
-    public Optional<E> one(I id, List<QueryField> fields) {
+    public Optional<E> one(I id, List<AttributeNode> fields) {
         return one(new Equal<>(id, idFieldName), entityGraphFactory.graphByFields(fields, entityClass));
     }
 
@@ -194,7 +194,7 @@ public class DataFetcher<E, I> {
      * @param fields        список полей, которые нужно получить
      * @return опциональное значение сущности
      */
-    public Optional<E> one(@NonNull Specification<E> specification, List<QueryField> fields) {
+    public Optional<E> one(@NonNull Specification<E> specification, List<AttributeNode> fields) {
         return one(specification, entityGraphFactory.graphByFields(fields, entityClass));
     }
 
@@ -245,7 +245,7 @@ public class DataFetcher<E, I> {
      * @param ids коллекция идентификаторов
      * @return список сущностей
      */
-    public List<E> fetchAllByIds(Collection<I> ids, List<QueryField> fields) {
+    public List<E> fetchAllByIds(Collection<I> ids, List<AttributeNode> fields) {
         return fetchAllByIds(ids, entityGraphFactory.graphByFields(fields, entityClass));
     }
 
@@ -269,7 +269,7 @@ public class DataFetcher<E, I> {
      * @param fields        список полей, которые нужно получить
      * @return список сущностей
      */
-    public List<E> list(@NonNull Specification<E> specification, @NonNull Sort sort, List<QueryField> fields) {
+    public List<E> list(@NonNull Specification<E> specification, @NonNull Sort sort, List<AttributeNode> fields) {
         return fetchEntities(specification, sort, entityGraphFactory.graphByFields(fields, entityClass));
     }
 
@@ -291,7 +291,7 @@ public class DataFetcher<E, I> {
      * @param fields        список полей, которые нужно получить
      * @return список сущностей
      */
-    public List<E> list(@NonNull Specification<E> specification, List<QueryField> fields) {
+    public List<E> list(@NonNull Specification<E> specification, List<AttributeNode> fields) {
         return fetchEntities(specification, Sort.unsorted(), entityGraphFactory.graphByFields(fields, entityClass));
     }
 
@@ -324,7 +324,7 @@ public class DataFetcher<E, I> {
      * @param fields        список полей, которые нужно получить
      * @return страница сущностей
      */
-    public Page<E> page(Specification<E> specification, @NonNull Pageable pageable, List<QueryField> fields) {
+    public Page<E> page(Specification<E> specification, @NonNull Pageable pageable, List<AttributeNode> fields) {
         return page(specification, pageable, entityGraphFactory.graphByFields(fields, entityClass));
     }
 
@@ -359,7 +359,7 @@ public class DataFetcher<E, I> {
      * @param fields        список полей, которые нужно получить
      * @return срез сущностей
      */
-    public Slice<E> slice(Specification<E> specification, @NonNull Pageable pageable, List<QueryField> fields) {
+    public Slice<E> slice(Specification<E> specification, @NonNull Pageable pageable, List<AttributeNode> fields) {
         return slice(specification, pageable, entityGraphFactory.graphByFields(fields, entityClass));
     }
 

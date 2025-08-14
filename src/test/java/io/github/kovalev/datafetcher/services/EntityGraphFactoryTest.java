@@ -4,7 +4,7 @@ import io.github.kovalev.datafetcher.domain.Post;
 import io.github.kovalev.datafetcher.domain.Post_;
 import io.github.kovalev.datafetcher.domain.User;
 import io.github.kovalev.datafetcher.domain.User_;
-import io.github.kovalev.datafetcher.utils.QueryField;
+import io.github.kovalev.datafetcher.utils.AttributeNode;
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Subgraph;
@@ -50,9 +50,9 @@ class EntityGraphFactoryTest {
 
     @Test
     void graphByFields_ShouldCreateEntityGraph_WithAssociationsOnly() {
-        List<QueryField> fields = List.of(
-                new QueryField(User_.POSTS, null),
-                new QueryField(User_.COMMENTS, null)
+        List<AttributeNode> fields = List.of(
+                new AttributeNode(User_.POSTS, null),
+                new AttributeNode(User_.COMMENTS, null)
         );
 
         when(entityManager.createEntityGraph(User.class)).thenReturn(userEntityGraph);
@@ -66,9 +66,9 @@ class EntityGraphFactoryTest {
 
     @Test
     void graphByFields_ShouldHandleNestedSubgraphs() {
-        List<QueryField> fields = List.of(
-                new QueryField(User_.POSTS, List.of(
-                        new QueryField(Post_.COMMENTS, null)
+        List<AttributeNode> fields = List.of(
+                new AttributeNode(User_.POSTS, List.of(
+                        new AttributeNode(Post_.COMMENTS, null)
                 ))
         );
 
@@ -84,8 +84,8 @@ class EntityGraphFactoryTest {
 
     @Test
     void graphByFields_ShouldLogWarning_WhenFieldIsNotAnAssociation() {
-        List<QueryField> fields = List.of(
-                new QueryField(User_.USERNAME, null)
+        List<AttributeNode> fields = List.of(
+                new AttributeNode(User_.USERNAME, null)
         );
 
         when(entityManager.createEntityGraph(User.class)).thenReturn(userEntityGraph);
@@ -99,9 +99,9 @@ class EntityGraphFactoryTest {
 
     @Test
     void graphByFields_ShouldSkipInvalidAssociations() {
-        List<QueryField> fields = List.of(
-                new QueryField(User_.POSTS, List.of(
-                        new QueryField("invalidField", null)
+        List<AttributeNode> fields = List.of(
+                new AttributeNode(User_.POSTS, List.of(
+                        new AttributeNode("invalidField", null)
                 ))
         );
 

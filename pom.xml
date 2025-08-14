@@ -6,11 +6,34 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.example</groupId>
-    <artifactId>data-fetcher-mvn</artifactId>
-    <version>1.0.0.Final</version>
-    <name>data-fetcher-mvn</name>
-    <description>data-fetcher-mvn</description>
+    <groupId>io.github.nakovalev</groupId>
+    <artifactId>data-fetcher</artifactId>
+    <version>2.0.0.Final</version>
+    <name>data-fetcher</name>
+    <description>data-fetcher</description>
+
+    <url>https://github.com/nakovalev/data-fetcher</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Nikolay Kovalev</name>
+            <email>Nikolay.Kovalev.SPB@mail.ru</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/nakovalev/data-fetcher</url>
+        <connection>scm:git:git://github.com/nakovalev/data-fetcher.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:nakovalev/data-fetcher.git</developerConnection>
+    </scm>
 
     <properties>
         <java.version>21</java.version>
@@ -139,6 +162,34 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.boot.version}</version>
@@ -148,6 +199,38 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <keyname>${env.GPG_KEYNAME}</keyname>
+                    <gpgArguments>
+                        <arg>--keyserver</arg>
+                        <arg>hkp://keyserver.ubuntu.com</arg>
+                    </gpgArguments>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.8.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                </configuration>
             </plugin>
         </plugins>
     </build>
