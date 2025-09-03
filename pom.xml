@@ -8,7 +8,7 @@
 
     <groupId>io.github.nakovalev</groupId>
     <artifactId>data-fetcher</artifactId>
-    <version>3.0.0.Final</version>
+    <version>3.1.0.Final</version>
     <name>data-fetcher</name>
     <description>data-fetcher</description>
 
@@ -38,6 +38,7 @@
     <properties>
         <java.version>21</java.version>
         <spring.boot.version>3.4.0</spring.boot.version>
+        <specification.helper>1.0.0.Final</specification.helper>
         <lombok.version>1.18.36</lombok.version>
         <flyway.version>10.20.1</flyway.version>
         <hibernate.version>7.1.0.Final</hibernate.version>
@@ -53,6 +54,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>${spring.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.nakovalev</groupId>
+            <artifactId>specification-helper</artifactId>
+            <version>${specification.helper}</version>
         </dependency>
 
         <!-- compileOnly for main -->

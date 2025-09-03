@@ -9,13 +9,13 @@ import io.github.kovalev.datafetcher.domain.Product;
 import io.github.kovalev.datafetcher.domain.Product_;
 import io.github.kovalev.datafetcher.domain.User;
 import io.github.kovalev.datafetcher.domain.User_;
-import io.github.kovalev.datafetcher.specifications.And;
-import io.github.kovalev.datafetcher.specifications.Empty;
-import io.github.kovalev.datafetcher.specifications.Equal;
-import io.github.kovalev.datafetcher.specifications.Include;
+import io.github.kovalev.datafetcher.utils.AttributeNode;
 import io.github.kovalev.datafetcher.utils.FunctionParams;
 import io.github.kovalev.datafetcher.utils.GroupParam;
-import io.github.kovalev.datafetcher.utils.AttributeNode;
+import io.github.kovalev.specificationhelper.specifications.And;
+import io.github.kovalev.specificationhelper.specifications.Empty;
+import io.github.kovalev.specificationhelper.specifications.Equal;
+import io.github.kovalev.specificationhelper.specifications.In;
 import org.hibernate.LazyInitializationException;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -286,7 +286,7 @@ class DataFetcherTest extends DatabaseTest {
                         .toList()
                         .subList(0, 5));
 
-        List<UUID> allIds = userDataFetcher.fetchAllIds(new Include<>(userIds, User_.ID));
+        List<UUID> allIds = userDataFetcher.fetchAllIds(new In<>(userIds, User_.ID));
 
         assertThat(allIds).containsExactlyInAnyOrderElementsOf(userIds);
     }

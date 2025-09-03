@@ -1,13 +1,12 @@
 package io.github.kovalev.datafetcher.services;
 
-
-import io.github.kovalev.datafetcher.specifications.Equal;
-import io.github.kovalev.datafetcher.specifications.Include;
+import io.github.kovalev.datafetcher.utils.AttributeNode;
 import io.github.kovalev.datafetcher.utils.FetchParams;
 import io.github.kovalev.datafetcher.utils.FunctionParams;
 import io.github.kovalev.datafetcher.utils.GroupParam;
-import io.github.kovalev.datafetcher.utils.PathCalculator;
-import io.github.kovalev.datafetcher.utils.AttributeNode;
+import io.github.kovalev.specificationhelper.specifications.Equal;
+import io.github.kovalev.specificationhelper.specifications.In;
+import io.github.kovalev.specificationhelper.utils.PathCalculator;
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Id;
@@ -179,11 +178,11 @@ public class DataFetcher<E, I> {
      * Получает одну сущность по идентификатору и списку полей.
      *
      * @param id     идентификатор сущности
-     * @param fields список полей, которые нужно получить
+     * @param attributeNodes список полей, которые нужно получить
      * @return опциональное значение сущности
      */
-    public Optional<E> one(I id, List<AttributeNode> fields) {
-        return one(new Equal<>(id, idFieldName), entityGraphFactory.graphByAttributeNodes(fields, entityClass));
+    public Optional<E> one(I id, List<AttributeNode> attributeNodes) {
+        return one(new Equal<>(id, idFieldName), entityGraphFactory.graphByAttributeNodes(attributeNodes, entityClass));
     }
 
 
@@ -191,11 +190,11 @@ public class DataFetcher<E, I> {
      * Получает одну сущность по спецификации и списку полей.
      *
      * @param specification спецификация для выборки сущности
-     * @param fields        список полей, которые нужно получить
+     * @param attributeNodes        список полей, которые нужно получить
      * @return опциональное значение сущности
      */
-    public Optional<E> one(@NonNull Specification<E> specification, List<AttributeNode> fields) {
-        return one(specification, entityGraphFactory.graphByAttributeNodes(fields, entityClass));
+    public Optional<E> one(@NonNull Specification<E> specification, List<AttributeNode> attributeNodes) {
+        return one(specification, entityGraphFactory.graphByAttributeNodes(attributeNodes, entityClass));
     }
 
     /**
@@ -245,8 +244,8 @@ public class DataFetcher<E, I> {
      * @param ids коллекция идентификаторов
      * @return список сущностей
      */
-    public List<E> fetchAllByIds(Collection<I> ids, List<AttributeNode> fields) {
-        return fetchAllByIds(ids, entityGraphFactory.graphByAttributeNodes(fields, entityClass));
+    public List<E> fetchAllByIds(Collection<I> ids, List<AttributeNode> attributeNodes) {
+        return fetchAllByIds(ids, entityGraphFactory.graphByAttributeNodes(attributeNodes, entityClass));
     }
 
     /**
@@ -266,11 +265,11 @@ public class DataFetcher<E, I> {
      *
      * @param specification спецификация для выборки сущностей
      * @param sort          сортировка для выборки сущностей
-     * @param fields        список полей, которые нужно получить
+     * @param attributeNodes        список полей, которые нужно получить
      * @return список сущностей
      */
-    public List<E> list(@NonNull Specification<E> specification, @NonNull Sort sort, List<AttributeNode> fields) {
-        return fetchEntities(specification, sort, entityGraphFactory.graphByAttributeNodes(fields, entityClass));
+    public List<E> list(@NonNull Specification<E> specification, @NonNull Sort sort, List<AttributeNode> attributeNodes) {
+        return fetchEntities(specification, sort, entityGraphFactory.graphByAttributeNodes(attributeNodes, entityClass));
     }
 
     /**
@@ -288,11 +287,11 @@ public class DataFetcher<E, I> {
      * Получает список сущностей по спецификации и списку полей.
      *
      * @param specification спецификация для выборки сущностей
-     * @param fields        список полей, которые нужно получить
+     * @param attributeNodes        список полей, которые нужно получить
      * @return список сущностей
      */
-    public List<E> list(@NonNull Specification<E> specification, List<AttributeNode> fields) {
-        return fetchEntities(specification, Sort.unsorted(), entityGraphFactory.graphByAttributeNodes(fields, entityClass));
+    public List<E> list(@NonNull Specification<E> specification, List<AttributeNode> attributeNodes) {
+        return fetchEntities(specification, Sort.unsorted(), entityGraphFactory.graphByAttributeNodes(attributeNodes, entityClass));
     }
 
     /**
@@ -321,11 +320,11 @@ public class DataFetcher<E, I> {
      *
      * @param specification спецификация для выборки сущностей
      * @param pageable      параметры пагинации
-     * @param fields        список полей, которые нужно получить
+     * @param attributeNodes        список полей, которые нужно получить
      * @return страница сущностей
      */
-    public Page<E> page(Specification<E> specification, @NonNull Pageable pageable, List<AttributeNode> fields) {
-        return page(specification, pageable, entityGraphFactory.graphByAttributeNodes(fields, entityClass));
+    public Page<E> page(Specification<E> specification, @NonNull Pageable pageable, List<AttributeNode> attributeNodes) {
+        return page(specification, pageable, entityGraphFactory.graphByAttributeNodes(attributeNodes, entityClass));
     }
 
     /**
@@ -356,11 +355,11 @@ public class DataFetcher<E, I> {
      *
      * @param specification спецификация для выборки сущностей
      * @param pageable      параметры пагинации
-     * @param fields        список полей, которые нужно получить
+     * @param attributeNodes        список полей, которые нужно получить
      * @return срез сущностей
      */
-    public Slice<E> slice(Specification<E> specification, @NonNull Pageable pageable, List<AttributeNode> fields) {
-        return slice(specification, pageable, entityGraphFactory.graphByAttributeNodes(fields, entityClass));
+    public Slice<E> slice(Specification<E> specification, @NonNull Pageable pageable, List<AttributeNode> attributeNodes) {
+        return slice(specification, pageable, entityGraphFactory.graphByAttributeNodes(attributeNodes, entityClass));
     }
 
     /**
@@ -567,7 +566,7 @@ public class DataFetcher<E, I> {
     }
 
     private List<E> fetchAllByIds(Collection<I> ids, EntityGraph<?> graph) {
-        return fetchEntities(new Include<>(ids, idFieldName), Sort.unsorted(), graph);
+        return fetchEntities(new In<>(ids, idFieldName), Sort.unsorted(), graph);
     }
 
     private List<E> fetchEntities(Specification<E> spec, Sort sort, EntityGraph<?> graph) {

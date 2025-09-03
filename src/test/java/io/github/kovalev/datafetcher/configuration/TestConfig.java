@@ -1,13 +1,11 @@
 package io.github.kovalev.datafetcher.configuration;
 
 import io.github.kovalev.datafetcher.domain.Comment;
-import io.github.kovalev.datafetcher.domain.ComparableEntity;
 import io.github.kovalev.datafetcher.domain.OrderItem;
 import io.github.kovalev.datafetcher.domain.Post;
 import io.github.kovalev.datafetcher.domain.User;
 import io.github.kovalev.datafetcher.services.DataFetcher;
 import io.github.kovalev.datafetcher.services.EntityGraphFactory;
-import io.github.kovalev.datafetcher.testutils.CommentGenerator;
 import io.github.kovalev.datafetcher.testutils.OrderGenerator;
 import io.github.kovalev.datafetcher.testutils.OrderItemGenerator;
 import io.github.kovalev.datafetcher.testutils.PostGenerator;
@@ -53,12 +51,6 @@ public class TestConfig {
     }
 
     @Bean
-    DataFetcher<ComparableEntity, Long> comparableDataFetcher(EntityManager entityManager,
-                                                              EntityGraphFactory entityGraphFactory) {
-        return new DataFetcher<>(entityManager, ComparableEntity.class, ComparableEntity::getId, entityGraphFactory);
-    }
-
-    @Bean
     public DataFetcher<OrderItem, Long> orderItemFetcher(EntityManager entityManager,
                                                          EntityGraphFactory entityGraphFactory) {
         return new DataFetcher<>(entityManager, OrderItem.class, OrderItem::getId, entityGraphFactory);
@@ -77,11 +69,6 @@ public class TestConfig {
     @Bean
     PostGenerator postGenerator(Random random) {
         return new PostGenerator(random);
-    }
-
-    @Bean
-    CommentGenerator commentGenerator(Random random) {
-        return new CommentGenerator(random);
     }
 
     @Bean
