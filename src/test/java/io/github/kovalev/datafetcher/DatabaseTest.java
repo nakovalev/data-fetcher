@@ -1,13 +1,9 @@
 package io.github.kovalev.datafetcher;
 
 import io.github.kovalev.datafetcher.configuration.TestConfig;
-import io.github.kovalev.datafetcher.domain.Comment;
-import io.github.kovalev.datafetcher.domain.ComparableEntity;
 import io.github.kovalev.datafetcher.domain.OrderItem;
-import io.github.kovalev.datafetcher.domain.Post;
 import io.github.kovalev.datafetcher.domain.User;
 import io.github.kovalev.datafetcher.services.DataFetcher;
-import io.github.kovalev.datafetcher.testutils.CommentGenerator;
 import io.github.kovalev.datafetcher.testutils.OrderGenerator;
 import io.github.kovalev.datafetcher.testutils.OrderItemGenerator;
 import io.github.kovalev.datafetcher.testutils.PostGenerator;
@@ -40,8 +36,6 @@ public abstract class DatabaseTest {
             "users",
             "comments",
             "posts",
-            "comparable_entity",
-            "temporal_entity",
             "orders",
             "products",
             "order_items"
@@ -55,19 +49,11 @@ public abstract class DatabaseTest {
     @Autowired
     protected DataFetcher<User, UUID> userDataFetcher;
     @Autowired
-    protected DataFetcher<Post, UUID> postDataFetcher;
-    @Autowired
-    protected DataFetcher<Comment, UUID> commentDataFetcher;
-    @Autowired
     protected DataFetcher<OrderItem, Long> orderItemFetcher;
-    @Autowired
-    protected DataFetcher<ComparableEntity, Long> comparableDataFetcher;
     @Autowired
     protected UserGenerator userGenerator;
     @Autowired
     protected PostGenerator postGenerator;
-    @Autowired
-    protected CommentGenerator commentGenerator;
     @Autowired
     protected ProductGenerator productGenerator;
     @Autowired

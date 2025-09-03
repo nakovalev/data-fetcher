@@ -1,5 +1,6 @@
 package io.github.kovalev.datafetcher.utils;
 
+import io.github.kovalev.specificationhelper.utils.PathCalculator;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;

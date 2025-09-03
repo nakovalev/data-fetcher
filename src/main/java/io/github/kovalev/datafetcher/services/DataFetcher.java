@@ -1,13 +1,12 @@
 package io.github.kovalev.datafetcher.services;
 
-
-import io.github.kovalev.datafetcher.specifications.Equal;
-import io.github.kovalev.datafetcher.specifications.Include;
 import io.github.kovalev.datafetcher.utils.AttributeNode;
 import io.github.kovalev.datafetcher.utils.FetchParams;
 import io.github.kovalev.datafetcher.utils.FunctionParams;
 import io.github.kovalev.datafetcher.utils.GroupParam;
-import io.github.kovalev.datafetcher.utils.PathCalculator;
+import io.github.kovalev.specificationhelper.specifications.Equal;
+import io.github.kovalev.specificationhelper.specifications.In;
+import io.github.kovalev.specificationhelper.utils.PathCalculator;
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Id;
@@ -567,7 +566,7 @@ public class DataFetcher<E, I> {
     }
 
     private List<E> fetchAllByIds(Collection<I> ids, EntityGraph<?> graph) {
-        return fetchEntities(new Include<>(ids, idFieldName), Sort.unsorted(), graph);
+        return fetchEntities(new In<>(ids, idFieldName), Sort.unsorted(), graph);
     }
 
     private List<E> fetchEntities(Specification<E> spec, Sort sort, EntityGraph<?> graph) {
